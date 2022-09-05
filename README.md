@@ -17,5 +17,5 @@ The following table shows the planned tech stack.
 | Backend | Golang |
 | Frontend | React.JS |
 | Serverless | Golang |
-| Database | SQLite |
+| Database | Postgres |
 
