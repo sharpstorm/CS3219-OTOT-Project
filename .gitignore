@@ -1,2 +1,4 @@
 ﻿backend/.env
 dist
+docker-command
+test-db

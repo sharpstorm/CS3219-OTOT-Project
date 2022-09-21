@@ -34,7 +34,7 @@ func CreateHTTPServer(port uint16) HTTPServer {
 
 func (server *httpServer) Start() {
 	fmt.Print("Starting Server")
-	if err := http.ListenAndServe(":8081", server.router); err != nil {
+	if err := http.ListenAndServe(fmt.Sprintf(":%d", server.port), server.router); err != nil {
 		fmt.Print("Failed to start the HTTP server")
 	}
 }

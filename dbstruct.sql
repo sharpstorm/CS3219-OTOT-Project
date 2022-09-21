@@ -4,15 +4,6 @@ CREATE TABLE users (
     user_password VARCHAR(255)
 );
 
-CREATE TABLE wishlist (
-    user_id INTEGER,
-    card_id INTEGER,
-    notes TEXT,
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (card_id) REFERENCES cards(card_id),
-    PRIMARY KEY (user_id, card_id)
-);
-
 CREATE TABLE api_tokens (
 	token_id SERIAL PRIMARY KEY,
     token VARCHAR(255) UNIQUE,
