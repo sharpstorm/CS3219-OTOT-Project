@@ -24,14 +24,15 @@ func NewDatabaseApiTokenAdapter(connector *DatabaseConnection) DatabaseApiTokenA
 
 func (adapter *databaseApiTokenAdapter) CreateApiToken(token string) error {
 	return adapter.dbAdapter.Execute(
-		"INSERT INTO api_tokens (token, is_enabled, created_at) VALUES(?, true, NOW());",
+		"INSERT INTO api_tokens (token, is_enabled, created_at) VALUES(?, true, NOW())",
 		token,
 	)
 }
 
 func (adapter *databaseApiTokenAdapter) SetApiTokenState(id int, isActive bool) error {
 	return adapter.dbAdapter.Execute(
-		"UPDATE api_tokens SET is_enabled=? WHERE token_id=?;",
+		"UPDATE api_tokens SET is_enabled=? WHERE token_id=?",
+		isActive,
 		id,
 	)
 }
@@ -45,7 +46,7 @@ func (adapter *databaseApiTokenAdapter) DeleteApiToken(id int) error {
 
 func (adapter *databaseApiTokenAdapter) IsValidToken(token string) (bool, error) {
 	row, err := adapter.dbAdapter.QuerySingle(
-		"SELECT * FROM api_tokens WHERE token=? AND is_enabled = TRUE;",
+		"SELECT * FROM api_tokens WHERE token=? AND is_enabled = TRUE",
 		token,
 	)
 	if err != nil {
