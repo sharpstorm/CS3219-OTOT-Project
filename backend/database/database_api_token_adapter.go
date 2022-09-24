@@ -4,6 +4,7 @@ import (
 	"backend.cs3219.comp.nus.edu.sg/model"
 )
 
+//go:generate mockgen -destination=../mocks/mock_database_api_token_adapter.go -build_flags=-mod=mod -package=mocks backend.cs3219.comp.nus.edu.sg/database DatabaseApiTokenAdapter
 type DatabaseApiTokenAdapter interface {
 	CreateApiToken(token string) error
 	DeleteApiToken(id int) error

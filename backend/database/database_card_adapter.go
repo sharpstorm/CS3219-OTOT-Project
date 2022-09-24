@@ -6,6 +6,7 @@ import (
 	"backend.cs3219.comp.nus.edu.sg/model"
 )
 
+//go:generate mockgen -destination=../mocks/mock_database_card_adapter.go -build_flags=-mod=mod -package=mocks backend.cs3219.comp.nus.edu.sg/database DatabaseCardAdapter
 type DatabaseCardAdapter interface {
 	CreateCard(card *model.Card) (*model.Card, error)
 	EditCard(card *model.Card) error

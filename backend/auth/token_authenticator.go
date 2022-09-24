@@ -6,6 +6,7 @@ import (
 	"backend.cs3219.comp.nus.edu.sg/database"
 )
 
+//go:generate mockgen -destination=../mocks/mock_token_authenticator.go -build_flags=-mod=mod -package=mocks backend.cs3219.comp.nus.edu.sg/auth TokenAuthenticator
 type TokenAuthenticator interface {
 	IsValidToken(token string) bool
 }
