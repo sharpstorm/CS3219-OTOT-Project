@@ -107,6 +107,11 @@ func (controller *cardController) createCard(
 		return
 	}
 
+	if cardData.ImageUrl == "" || cardData.Pokemon == "" || cardData.UniqueId == "" {
+		controller.writeBadRequest(resp)
+		return
+	}
+
 	existingCard, err := controller.db.GetCardByUniqueId(cardData.UniqueId)
 	if err != nil {
 		controller.writeInternalError(resp)
@@ -148,6 +153,11 @@ func (controller *cardController) editCard(
 	var cardData model.Card
 	err := controller.readJson(req, &cardData)
 	if err != nil {
+		controller.writeBadRequest(resp)
+		return
+	}
+
+	if cardData.ImageUrl == "" || cardData.Pokemon == "" || cardData.UniqueId == "" {
 		controller.writeBadRequest(resp)
 		return
 	}
@@ -212,11 +222,11 @@ func (controller *cardController) deleteCard(
 	}
 
 	var response struct {
-		success bool
+		Success bool `json:"success"`
 	}
-	response.success = true
+	response.Success = true
 	err = controller.writeJson(resp, &response)
 	if err != nil {
-		log.Println("Failed to write response for createCard")
+		log.Println("Failed to write response for deleteCard")
 	}
 }
