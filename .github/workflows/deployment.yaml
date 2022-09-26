@@ -6,7 +6,7 @@ name: Deploy App to GCE
 on:
   push:
     branches:
-    - 'cd'
+    - 'feature/cd'
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
