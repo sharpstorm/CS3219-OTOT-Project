@@ -53,4 +53,5 @@ jobs:
       run: |-
         gcloud compute instances update-container "$GCE_INSTANCE" \
           --zone "$GCE_INSTANCE_ZONE" \
-          --container-image "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA"
+          --container-image "gcr.io/$PROJECT_ID/$GCE_INSTANCE-image:$GITHUB_SHA" \
+          --container-env DATABASE_NAME=${{ secrets.DEPLOYMENT_DATABASE_NAME }},DATABASE_USERNAME=${{ secrets.DEPLOYMENT_DATABASE_USERNAME }},DATABASE_PASSWORD=${{ secrets.DEPLOYMENT_DATABASE_PASSWORD }},DATABASE_URL=${{ secrets.DEPLOYMENT_DATABASE_URL }}
