@@ -3,6 +3,11 @@
 
 name: Deploy App to GCE
 
+on:
+  push:
+    branches:
+    - 'cd'
+
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
   GCE_INSTANCE: ${{ secrets.GCE_INSTANCE_NAME }}
