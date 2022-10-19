@@ -23,6 +23,7 @@ class NetworkAdapter {
   }
 
   setApiKey(apiKey) {
+    // eslint-disable-next-line no-console
     console.log('API Key was set');
     this.apiKey = apiKey;
   }

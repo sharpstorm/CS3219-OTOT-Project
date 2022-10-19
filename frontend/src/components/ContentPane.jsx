@@ -17,6 +17,7 @@ export default function ContentPane({ onCardSelected }) {
     ))), [globalCards, filter]);
 
   const searchCallback = (searchTerm) => {
+    // eslint-disable-next-line no-console
     console.log(`Searching ${searchTerm}`);
     setFilter(searchTerm.toLowerCase());
   };
