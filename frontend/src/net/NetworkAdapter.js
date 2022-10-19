@@ -70,6 +70,7 @@ class NetworkAdapter {
         Authorization: `Bearer ${this.apiKey}`,
       },
       body: JSON.stringify({
+        id: newCardModel.cardId,
         uniqueId: newCardModel.cardUniqueId,
         pokemon: newCardModel.name,
         imageUrl: newCardModel.imageUrl,
