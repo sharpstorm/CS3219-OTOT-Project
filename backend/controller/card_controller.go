@@ -172,7 +172,7 @@ func (controller *cardController) editCard(
 		controller.writeInternalError(resp)
 		return
 	}
-	if existingCard != nil {
+	if existingCard != nil && existingCard.Id != cardId {
 		controller.writeError(resp, 403, "A card with the same unique ID already exists")
 		return
 	}
