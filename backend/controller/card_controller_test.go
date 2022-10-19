@@ -344,7 +344,7 @@ func (suite *CardControllerTestSuite) TestEditCard() {
 	authenticator := mocks.NewMockTokenAuthenticator(mockCtrl)
 	cardAdapter := mocks.NewMockDatabaseCardAdapter(mockCtrl)
 	gomock.InOrder(
-		cardAdapter.EXPECT().GetCardByUniqueId(gomock.Eq("CARD-102")).Return(suite.seedModels[0], nil),
+		cardAdapter.EXPECT().GetCardByUniqueId(gomock.Eq("CARD-102")).Return(suite.seedModels[1], nil),
 		cardAdapter.EXPECT().GetCardByUniqueId(gomock.Eq("CARD-300")).Return(nil, nil),
 		cardAdapter.EXPECT().GetCard(gomock.Eq(101)).Return(suite.seedModels[0], nil),
 		cardAdapter.EXPECT().EditCard(gomock.Eq(
@@ -476,6 +476,7 @@ func (suite *CardControllerTestSuite) TestEditCard() {
 		Pokemon:  "BBB",
 		ImageUrl: "Image2",
 	})
+
 	request.Body = io.NopCloser(bytes.NewReader(bodyData))
 	responseStub = newResponseWriter()
 	controller.editCard(responseStub, request, httpParams)
@@ -483,6 +484,7 @@ func (suite *CardControllerTestSuite) TestEditCard() {
 	var result model.Card
 	err := json.Unmarshal(responseStub.body, &result)
 	assert.Nil(suite.T(), err)
+
 	assert.Equal(suite.T(), model.Card{
 		Id:       101,
 		UniqueId: "CARD-300",
