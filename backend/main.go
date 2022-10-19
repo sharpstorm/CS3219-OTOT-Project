@@ -28,7 +28,7 @@ func main() {
 	log.Println("Starting server")
 	server := server.CreateHTTPServer(uint16(appConfig.Port))
 	attachCardController(server, dbConn, tokenAuthenticator)
-	server.AddAssetRoute("/static/*filepath", "./static")
+	server.AddAssetRoute("/static/*filepath", "./static/static")
 	server.AddStaticRoute("/", "./static/index.html")
 	server.AddStaticRoute("/favicon.ico", "./static/favicon.ico")
 	server.AddStaticRoute("/robots.txt", "./static/robots.txt")
