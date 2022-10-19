@@ -5,7 +5,7 @@ import { useCardCacheContext } from './CardDataProvider';
 import CardPane from './CardPane';
 import SearchBar from './SearchBar';
 
-export default function ContentPane({ onCardSelected }) {
+export default function ContentPane({ onCardSelected, onPriceCheck }) {
   const globalCards = useCardCacheContext();
   const [filter, setFilter] = useState('');
 
@@ -25,11 +25,12 @@ export default function ContentPane({ onCardSelected }) {
   return (
     <Container className="pt-4">
       <SearchBar searchCallback={searchCallback} />
-      <CardPane cards={cachedVisible} onCardSelected={onCardSelected} />
+      <CardPane cards={cachedVisible} onCardSelected={onCardSelected} onPriceCheck={onPriceCheck} />
     </Container>
   );
 }
 
 ContentPane.propTypes = {
   onCardSelected: PropTypes.func.isRequired,
+  onPriceCheck: PropTypes.func.isRequired,
 };

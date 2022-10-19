@@ -8,14 +8,19 @@ let dummyData = [
 ];
 let nextIndex = 5;
 
+const priceCheckUrl = 'https://asia-southeast1-cs3219-otot-b-363213.cloudfunctions.net/cs3219-otot-b-serverless/GetPrice';
+
 class NetworkAdapter {
   apiKey;
 
   changeCallback;
 
-  constructor(changeCallback) {
+  priceCacheSetter;
+
+  constructor(changeCallback, priceCacheSetter) {
     this.apiKey = '';
     this.changeCallback = changeCallback;
+    this.priceCacheSetter = priceCacheSetter;
   }
 
   isReady() {
@@ -72,6 +77,22 @@ class NetworkAdapter {
     dummyData = dummyData.filter((card) => (card.cardId !== cardModel.cardId));
 
     await this.netGetCards();
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  async netCheckPrice(cardModel) {
+    if (this.priceCacheSetter === undefined) {
+      return;
+    }
+
+    const result = await fetch(priceCheckUrl, {
+      method: 'POST',
+      body: JSON.stringify({
+        cardUniqueId: cardModel.cardUniqueId,
+      }),
+    });
+    const response = await result.json();
+    this.priceCacheSetter(cardModel.cardUniqueId, response.data);
   }
 }
 

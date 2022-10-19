@@ -4,6 +4,7 @@ import ContentPane from './ContentPane';
 import AddCardModal from './modals/AddCardModal';
 import ViewCardModal from './modals/ViewCardModal';
 import { useNetworkAdapterContext } from './CardDataProvider';
+import { useToast } from './ToastProvider';
 
 const MODAL_NONE = 0;
 const MODAL_CREATE = 1;
@@ -14,10 +15,17 @@ export default function ContentFlow() {
   const [isSaving, setIsSaving] = useState(false);
   const [cardData, setCardData] = useState(undefined);
   const networkAdapter = useNetworkAdapterContext();
+  const pushToast = useToast();
 
   const viewCard = (cardModel) => {
     setCardData(cardModel);
     setActiveModal(MODAL_VIEW);
+  };
+
+  const checkPriceForCard = (cardModel) => {
+    networkAdapter.netCheckPrice(cardModel).catch(() => {
+      pushToast('Failed to get card price');
+    });
   };
 
   const saveCreateCard = (newCard) => {
@@ -25,6 +33,8 @@ export default function ContentFlow() {
     networkAdapter.netCreateCard(newCard).then(() => {
       setIsSaving(false);
       setActiveModal(MODAL_NONE);
+    }).catch(() => {
+      pushToast('Failed to save card');
     });
   };
 
@@ -33,6 +43,8 @@ export default function ContentFlow() {
     networkAdapter.netEditCard(newCard).then(() => {
       setIsSaving(false);
       setActiveModal(MODAL_NONE);
+    }).catch(() => {
+      pushToast('Failed to save card changes');
     });
   };
 
@@ -41,6 +53,8 @@ export default function ContentFlow() {
     networkAdapter.netDeleteCard(card).then(() => {
       setIsSaving(false);
       setActiveModal(MODAL_NONE);
+    }).catch(() => {
+      pushToast('Failed to delete card');
     });
   };
 
@@ -67,6 +81,7 @@ export default function ContentFlow() {
       />
       <ContentPane
         onCardSelected={viewCard}
+        onPriceCheck={checkPriceForCard}
       />
     </>
   );
