@@ -48,3 +48,16 @@ jobs:
 
       - name: 'Run golang tests'
         run: 'cd backend && make test'
+
+  build-react:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up repository
+        uses: actions/checkout@main
+      
+      - name: Merge to main branch
+        run: git checkout --progress --force ${{ github.sha }}
+
+      - name: 'Build And Lint Frontend'
+        run: 'cd frontend && npm i && npm run-script lint && npm run-script build'
