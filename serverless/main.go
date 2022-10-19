@@ -1,4 +1,6 @@
-package main
+/* Built on Google's Cloud Functions V1 */
+
+package functions
 
 import (
 	"encoding/json"
@@ -7,8 +9,6 @@ import (
 	"net/http"
 	"os"
 	"time"
-
-	"github.com/GoogleCloudPlatform/functions-framework-go/functions"
 )
 
 type QueryResponse struct {
@@ -41,12 +41,8 @@ type PriceRange struct {
 	MarketPrice float32 `json:"market"`
 }
 
-func init() {
-	functions.HTTP("GetPrice", getPrice)
-}
-
 // helloGet is an HTTP Cloud Function.
-func getPrice(w http.ResponseWriter, r *http.Request) {
+func GetPrice(w http.ResponseWriter, r *http.Request) {
 	apiToken := os.Getenv("API_KEY")
 	if apiToken == "" {
 		writeError(w, 500, "Server is not configured correctly")
