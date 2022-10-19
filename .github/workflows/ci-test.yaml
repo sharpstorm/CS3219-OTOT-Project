@@ -59,5 +59,16 @@ jobs:
       - name: Merge to main branch
         run: git checkout --progress --force ${{ github.sha }}
 
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: 'Restore NPM Cache'
+        uses: actions/cache@v3
+        with:
+          path: frontend/node_modules
+          key: npm-cache
+
       - name: 'Build And Lint Frontend'
         run: 'cd frontend && npm i && npm run-script lint && npm run-script build'
