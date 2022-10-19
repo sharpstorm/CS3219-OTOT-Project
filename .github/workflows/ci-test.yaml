@@ -71,4 +71,4 @@ jobs:
           key: npm-cache
 
       - name: 'Build And Lint Frontend'
-        run: 'cd frontend && npm i && npm run-script lint && npm run-script build'
+        run: 'CI=false cd frontend && npm i && npm run-script lint && npm run-script build'
