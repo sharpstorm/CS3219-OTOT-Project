@@ -33,8 +33,8 @@ export default function ContentFlow() {
     networkAdapter.netCreateCard(newCard).then(() => {
       setIsSaving(false);
       setActiveModal(MODAL_NONE);
-    }).catch(() => {
-      pushToast('Failed to save card');
+    }).catch((err) => {
+      pushToast(`Failed to save card, error: ${err}`);
     });
   };
 
@@ -43,8 +43,8 @@ export default function ContentFlow() {
     networkAdapter.netEditCard(newCard).then(() => {
       setIsSaving(false);
       setActiveModal(MODAL_NONE);
-    }).catch(() => {
-      pushToast('Failed to save card changes');
+    }).catch((err) => {
+      pushToast(`Failed to save card changes, error: ${err}`);
     });
   };
 
@@ -53,8 +53,8 @@ export default function ContentFlow() {
     networkAdapter.netDeleteCard(card).then(() => {
       setIsSaving(false);
       setActiveModal(MODAL_NONE);
-    }).catch(() => {
-      pushToast('Failed to delete card');
+    }).catch((err) => {
+      pushToast(`Failed to delete card, error: ${err}`);
     });
   };
 
