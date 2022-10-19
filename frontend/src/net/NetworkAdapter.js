@@ -1,13 +1,5 @@
 import CardModel from '../model/CardModel';
 
-let dummyData = [
-  new CardModel(1, 'swsh4-23', 'Charmander', 'https://images.pokemontcg.io/swsh4/23_hires.png'),
-  new CardModel(2, 'swsh4-24', 'Charmelon', 'https://images.pokemontcg.io/swsh4/24_hires.png'),
-  new CardModel(3, 'swsh4-25', 'Charizard', 'https://images.pokemontcg.io/swsh4/25_hires.png'),
-  new CardModel(4, 'swsh4-36', 'Galarian Darmantian', 'https://images.pokemontcg.io/swsh4/36_hires.png'),
-];
-let nextIndex = 5;
-
 const priceCheckUrl = 'https://asia-southeast1-cs3219-otot-b-363213.cloudfunctions.net/cs3219-otot-b-serverless/GetPrice';
 
 class NetworkAdapter {
@@ -38,7 +30,13 @@ class NetworkAdapter {
       return;
     }
 
-    this.changeCallback([...dummyData]);
+    const response = await fetch('/api/card', {
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+    });
+    const data = await response.json();
+    this.changeCallback(data.map((x) => new CardModel(x.id, x.uniqueId, x.pokemon, x.imageUrl)));
   }
 
   async netCreateCard(newCardModel) {
@@ -46,13 +44,17 @@ class NetworkAdapter {
       return;
     }
 
-    dummyData.push(new CardModel(
-      nextIndex,
-      newCardModel.cardUniqueId,
-      newCardModel.name,
-      newCardModel.imageUrl,
-    ));
-    nextIndex += 1;
+    await fetch('/api/card', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify({
+        uniqueId: newCardModel.cardUniqueId,
+        pokemon: newCardModel.name,
+        imageUrl: newCardModel.imageUrl,
+      }),
+    });
 
     await this.netGetCards();
   }
@@ -62,9 +64,18 @@ class NetworkAdapter {
       return;
     }
 
-    dummyData = dummyData.map(
-      (card) => ((card.cardId === newCardModel.cardId) ? newCardModel : card),
-    );
+    await fetch(`/api/card/${newCardModel.cardId}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+      body: JSON.stringify({
+        id: newCardModel.cardId,
+        uniqueId: newCardModel.cardUniqueId,
+        pokemon: newCardModel.name,
+        imageUrl: newCardModel.imageUrl,
+      }),
+    });
 
     await this.netGetCards();
   }
@@ -74,7 +85,12 @@ class NetworkAdapter {
       return;
     }
 
-    dummyData = dummyData.filter((card) => (card.cardId !== cardModel.cardId));
+    await fetch(`/api/card/${cardModel.cardId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${this.apiKey}`,
+      },
+    });
 
     await this.netGetCards();
   }
