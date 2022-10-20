@@ -196,7 +196,7 @@ func (controller *cardController) editCard(
 		return
 	}
 	if targetCard == nil {
-		controller.writeError(resp, 403, "No such card exists")
+		controller.writeNotFound(resp)
 		return
 	}
 
@@ -228,7 +228,17 @@ func (controller *cardController) deleteCard(
 	}
 	cardId := *cardIdParam
 
-	err := controller.db.DeleteCard(cardId)
+	targetCard, err := controller.db.GetCard(cardId)
+	if err != nil {
+		controller.writeInternalError(resp)
+		return
+	}
+	if targetCard == nil {
+		controller.writeNotFound(resp)
+		return
+	}
+
+	err = controller.db.DeleteCard(cardId)
 	if err != nil {
 		controller.writeInternalError(resp)
 		return
