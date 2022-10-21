@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  postgres-test:
+    image: postgres:14.5-alpine
+    environment:
+      - POSTGRES_USER=ciuser
+      - POSTGRES_PASSWORD=cipassword
+      - POSTGRES_DB=cidb
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+      - ./dbstruct.sql:/docker-entrypoint-initdb.d/init.sql
+
+  test_backend:
+    platform: linux/amd64
+
+    build:
+      context: backend
+      dockerfile: backend/backend-test.dockerfile
+
+    ports:
+      - "8000:8000"
+    depends_on:
+      - "postgres-test"
+    environment:
+      - DATABASE_USERNAME=ciuser
+      - DATABASE_PASSWORD=cipassword
+      - DATABASE_NAME=cidb
+      - DATABASE_URL=postgres-test
+      - APP_PORT=8000
+      - CGO_ENABLED=0
+    entrypoint: ["./test-wait-for-db.sh", "make", "test", "test-e2e"]
+
+volumes:
+  db:
+    driver: local

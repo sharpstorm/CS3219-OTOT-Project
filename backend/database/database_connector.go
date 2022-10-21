@@ -22,7 +22,7 @@ type DatabaseConnection struct {
 	Password string
 	DbName   string
 
-	conn *bun.DB
+	Conn *bun.DB
 }
 
 type databaseAdapter[M any] struct {
@@ -49,14 +49,18 @@ func ConnectDatabase(server string, username string, password string, dbName str
 		Password: password,
 		DbName:   dbName,
 
-		conn: dbConn,
+		Conn: dbConn,
 	}, nil
 }
 
 func newDatabaseAdapter[M any](conn *DatabaseConnection) DatabaseAdapter[M] {
 	return &databaseAdapter[M]{
-		conn: conn.conn,
+		conn: conn.Conn,
 	}
+}
+
+func (db *databaseAdapter[M]) GetConn() *bun.DB {
+	return db.conn
 }
 
 func (db *databaseAdapter[M]) QuerySingle(query string, args ...interface{}) (*M, error) {
