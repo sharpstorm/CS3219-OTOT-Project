@@ -6,7 +6,7 @@ The repo is structured as a monorepo, consisting of a backend, a frontend and se
 
 ## Overall Idea
 
-The project is a portal for tracking a wishlist of Pokemon Trading Card Game (TCG) cards. It should allow users to build lists / decks of cards, and indicate whether the user has it.
+The project is a portal for tracking a wishlist of Pokemon Trading Card Game (TCG) cards. It should allow the user to check and remove cards, as well as check their prices.
 
 ## Tech Stack
 
