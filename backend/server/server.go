@@ -11,6 +11,7 @@ type HTTPHandler httprouter.Handle
 
 type HTTPServer interface {
 	Start()
+	GetRouter() *httprouter.Router
 	AddAssetRoute(route string, assetPath string)
 	AddStaticRoute(route string, assetPath string)
 	Get(route string, handler HTTPHandler)
@@ -37,6 +38,10 @@ func (server *httpServer) Start() {
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", server.port), server.router); err != nil {
 		fmt.Print("Failed to start the HTTP server")
 	}
+}
+
+func (server *httpServer) GetRouter() *httprouter.Router {
+	return server.router
 }
 
 func (server *httpServer) AddAssetRoute(route string, assetPath string) {

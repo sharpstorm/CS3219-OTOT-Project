@@ -43,7 +43,7 @@ export default function CardTile({
 
   return (
     <Col>
-      <Card border="secondary">
+      <Card border="secondary" style={{ marginTop: 8 }}>
         <Card.Img variant="top" src={imageUrl} />
         <Card.Body>
           <Card.Title>

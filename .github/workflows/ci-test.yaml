@@ -47,7 +47,7 @@ jobs:
         run: PGPASSWORD=cipassword psql -h postgres -d cidb -U ciuser -f dbstruct.sql
 
       - name: 'Run golang tests'
-        run: 'cd backend && make test'
+        run: 'cd backend && make test test-e2e'
 
   build-react:
     runs-on: ubuntu-latest

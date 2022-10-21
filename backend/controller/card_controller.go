@@ -3,6 +3,7 @@ package controller
 import (
 	"log"
 	"net/http"
+	"net/url"
 
 	"backend.cs3219.comp.nus.edu.sg/auth"
 	"backend.cs3219.comp.nus.edu.sg/database"
@@ -112,6 +113,12 @@ func (controller *cardController) createCard(
 		return
 	}
 
+	_, err = url.ParseRequestURI(cardData.ImageUrl)
+	if err != nil {
+		controller.writeError(resp, 400, "The URL provided is invalid")
+		return
+	}
+
 	existingCard, err := controller.db.GetCardByUniqueId(cardData.UniqueId)
 	if err != nil {
 		controller.writeInternalError(resp)
@@ -167,6 +174,12 @@ func (controller *cardController) editCard(
 		return
 	}
 
+	_, err = url.ParseRequestURI(cardData.ImageUrl)
+	if err != nil {
+		controller.writeError(resp, 400, "The URL provided is invalid")
+		return
+	}
+
 	existingCard, err := controller.db.GetCardByUniqueId(cardData.UniqueId)
 	if err != nil {
 		controller.writeInternalError(resp)
@@ -183,7 +196,7 @@ func (controller *cardController) editCard(
 		return
 	}
 	if targetCard == nil {
-		controller.writeError(resp, 403, "No such card exists")
+		controller.writeNotFound(resp)
 		return
 	}
 
@@ -215,7 +228,17 @@ func (controller *cardController) deleteCard(
 	}
 	cardId := *cardIdParam
 
-	err := controller.db.DeleteCard(cardId)
+	targetCard, err := controller.db.GetCard(cardId)
+	if err != nil {
+		controller.writeInternalError(resp)
+		return
+	}
+	if targetCard == nil {
+		controller.writeNotFound(resp)
+		return
+	}
+
+	err = controller.db.DeleteCard(cardId)
 	if err != nil {
 		controller.writeInternalError(resp)
 		return

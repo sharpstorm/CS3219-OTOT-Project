@@ -52,14 +52,14 @@ func (suite *CardAdapterTestSuite) SetupSuite() {
 		},
 	}
 
-	_, _ = conn.conn.NewTruncateTable().Model(&model.Card{}).Cascade().Exec(suite.ctx)
-	_, err = conn.conn.NewInsert().Model(suite.seedModels[0]).ExcludeColumn("card_id").Exec(suite.ctx)
+	_, _ = conn.Conn.NewTruncateTable().Model(&model.Card{}).Cascade().Exec(suite.ctx)
+	_, err = conn.Conn.NewInsert().Model(suite.seedModels[0]).ExcludeColumn("card_id").Exec(suite.ctx)
 	assert.Nil(suite.T(), err)
 
-	_, err = conn.conn.NewInsert().Model(suite.seedModels[1]).ExcludeColumn("card_id").Exec(suite.ctx)
+	_, err = conn.Conn.NewInsert().Model(suite.seedModels[1]).ExcludeColumn("card_id").Exec(suite.ctx)
 	assert.Nil(suite.T(), err)
 
-	_, err = conn.conn.NewInsert().Model(suite.seedModels[2]).ExcludeColumn("card_id").Exec(suite.ctx)
+	_, err = conn.Conn.NewInsert().Model(suite.seedModels[2]).ExcludeColumn("card_id").Exec(suite.ctx)
 	assert.Nil(suite.T(), err)
 }
 
@@ -75,7 +75,7 @@ func (suite *CardAdapterTestSuite) TestNewModel() {
 	assert.Nil(suite.T(), err)
 
 	results := make([]*model.Card, 0)
-	suite.conn.conn.NewSelect().Model(&model.Card{}).Scan(suite.ctx, &results)
+	suite.conn.Conn.NewSelect().Model(&model.Card{}).Scan(suite.ctx, &results)
 
 	assert.Contains(suite.T(), results, createdModel)
 }
@@ -86,7 +86,7 @@ func (suite *CardAdapterTestSuite) TestDeleteModel() {
 	assert.Nil(suite.T(), err)
 
 	results := make([]*model.Card, 0)
-	suite.conn.conn.NewSelect().Model(&model.Card{}).Scan(suite.ctx, &results)
+	suite.conn.Conn.NewSelect().Model(&model.Card{}).Scan(suite.ctx, &results)
 
 	for _, item := range results {
 		if item.Id == 2 {
@@ -107,7 +107,7 @@ func (suite *CardAdapterTestSuite) TestUpdateModel() {
 	assert.Nil(suite.T(), err)
 
 	results := make([]*model.Card, 0)
-	suite.conn.conn.NewSelect().Model(&model.Card{}).Scan(suite.ctx, &results)
+	suite.conn.Conn.NewSelect().Model(&model.Card{}).Scan(suite.ctx, &results)
 
 	assert.Contains(suite.T(), results, changedModel)
 }

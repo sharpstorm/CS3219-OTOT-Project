@@ -59,9 +59,9 @@ func (suite *ApiTokenAdapterTestSuite) SetupSuite() {
 		},
 	}
 
-	_, _ = conn.conn.NewTruncateTable().Model(&model.ApiToken{}).Cascade().Exec(suite.ctx)
+	_, _ = conn.Conn.NewTruncateTable().Model(&model.ApiToken{}).Cascade().Exec(suite.ctx)
 	for _, item := range suite.seedModels {
-		_, err = conn.conn.NewInsert().Model(item).ExcludeColumn("token_id").Exec(suite.ctx)
+		_, err = conn.Conn.NewInsert().Model(item).ExcludeColumn("token_id").Exec(suite.ctx)
 		assert.Nil(suite.T(), err)
 	}
 }
@@ -73,7 +73,7 @@ func (suite *ApiTokenAdapterTestSuite) TestCreateApiToken() {
 	assert.Nil(suite.T(), err)
 
 	results := make([]*model.ApiToken, 0)
-	suite.conn.conn.NewSelect().Model(&model.ApiToken{}).Where("token = ?", token).Scan(suite.ctx, &results)
+	suite.conn.Conn.NewSelect().Model(&model.ApiToken{}).Where("token = ?", token).Scan(suite.ctx, &results)
 
 	assert.Equal(suite.T(), 1, len(results))
 }
@@ -84,7 +84,7 @@ func (suite *ApiTokenAdapterTestSuite) TestSetApiTokenState() {
 	assert.Nil(suite.T(), err)
 
 	results := make([]*model.ApiToken, 0)
-	suite.conn.conn.NewSelect().Model(&model.ApiToken{}).Where("token_id = ?", 1).Scan(suite.ctx, &results)
+	suite.conn.Conn.NewSelect().Model(&model.ApiToken{}).Where("token_id = ?", 1).Scan(suite.ctx, &results)
 
 	assert.Equal(suite.T(), 1, len(results))
 	assert.False(suite.T(), results[0].IsEnabled)
@@ -96,7 +96,7 @@ func (suite *ApiTokenAdapterTestSuite) TestDeleteApiToken() {
 	assert.Nil(suite.T(), err)
 
 	results := make([]*model.ApiToken, 0)
-	suite.conn.conn.NewSelect().Model(&model.ApiToken{}).Where("token_id = ?", 2).Scan(suite.ctx, &results)
+	suite.conn.Conn.NewSelect().Model(&model.ApiToken{}).Where("token_id = ?", 2).Scan(suite.ctx, &results)
 
 	assert.Equal(suite.T(), 0, len(results))
 }
