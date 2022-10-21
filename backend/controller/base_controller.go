@@ -81,7 +81,7 @@ func (controller *baseController) writeJsonType(resp http.ResponseWriter, code i
 
 func (controller *baseController) authenticateRequest(resp http.ResponseWriter, req *http.Request) bool {
 	if !controller.isBearerValid(req) {
-		resp.WriteHeader(403)
+		resp.WriteHeader(401)
 		resp.Write([]byte("Unauthorized"))
 		return false
 	}

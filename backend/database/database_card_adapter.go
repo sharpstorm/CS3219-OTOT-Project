@@ -72,7 +72,7 @@ func (adapter *databaseCardAdapter) GetCard(id int) (*model.Card, error) {
 
 func (adapter *databaseCardAdapter) GetCardByUniqueId(uniqueId string) (*model.Card, error) {
 	result, err := adapter.dbAdapter.QuerySingle(
-		"SELECT * FROM cards WHERE card_unique_id=?",
+		"SELECT * FROM cards WHERE card_unique_id=? ORDER BY card_id ASC",
 		uniqueId,
 	)
 	if err != nil {
@@ -82,7 +82,7 @@ func (adapter *databaseCardAdapter) GetCardByUniqueId(uniqueId string) (*model.C
 }
 
 func (adapter *databaseCardAdapter) GetAllCards() ([]*model.Card, error) {
-	results, err := adapter.dbAdapter.QueryMany("SELECT * FROM cards")
+	results, err := adapter.dbAdapter.QueryMany("SELECT * FROM cards ORDER BY card_id ASC")
 	if err != nil {
 		return nil, err
 	}

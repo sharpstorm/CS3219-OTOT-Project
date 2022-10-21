@@ -1,0 +1,43 @@
+# Using CLI specifications from:
+# https://cloud.google.com/sdk/gcloud/reference/functions/deploy
+
+name: Deploy App to Google Cloud Functions
+
+on:
+  push:
+    branches:
+    - 'release'
+
+env:
+  PROJECT_ID: ${{ secrets.GCE_PROJECT }}
+
+jobs:
+  setup-build-publish-deploy:
+    name: Deploy Serverless
+    runs-on: ubuntu-latest
+
+    # Add "id-token" with the intended permissions.
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Alternative option - authentication via credentials json
+    - id: 'auth'
+      uses: 'google-github-actions/auth@v0'
+      with:
+        credentials_json: '${{ secrets.GCE_SA_KEY }}'
+
+    # Setup gcloud CLI
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+
+    - name: Deploy
+      run: |-
+        gcloud functions deploy "${{ secrets.SERVERLESS_INSTANCE_NAME }}" \
+          --region="${{ secrets.SERVERLESS_INSTANCE_ZONE }}" --project=$PROJECT_ID \
+          --entry-point=GetPrice \
+          --runtime go119 --trigger-http --allow-unauthenticated --source=./serverless
