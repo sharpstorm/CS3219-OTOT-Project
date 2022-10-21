@@ -36,6 +36,10 @@ class NetworkAdapter {
       },
     });
     const data = await response.json();
+    if (!data) {
+      return;
+    }
+
     this.changeCallback(data.map((x) => new CardModel(x.id, x.uniqueId, x.pokemon, x.imageUrl)));
   }
 
@@ -108,6 +112,9 @@ class NetworkAdapter {
       }),
     });
     const response = await result.json();
+    if (!response.data) {
+      throw new Error('Could not fetch price information');
+    }
     this.priceCacheSetter(cardModel.cardUniqueId, response.data);
   }
 }

@@ -17,7 +17,7 @@ services:
 
     build:
       context: backend
-      dockerfile: backend/backend-test.dockerfile
+      dockerfile: backend-test.dockerfile
 
     ports:
       - "8000:8000"
