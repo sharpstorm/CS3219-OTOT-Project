@@ -1,14 +1,14 @@
 # Adapted from:
 # https://github.com/google-github-actions/setup-gcloud/blob/main/example-workflows/gce/.github/workflows/gce.yaml
 
-name: Deploy App to GCE
+name: Deploy App to Google Cloud Functions
 
 on: [push]
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
-  GCE_INSTANCE: ${{ secrets.GCE_INSTANCE_NAME }}
-  GCE_INSTANCE_ZONE: ${{ secrets.GCE_INSTANCE_ZONE }}
+  SERVERLESS_INSTANCE: ${{ secrets.SERVERLESS_INSTANCE_NAME }}
+  SERVERLESS_INSTANCE_ZONE: ${{ secrets.SERVERLESS_INSTANCE_ZONE }}
 
 jobs:
   setup-build-publish-deploy:
@@ -40,5 +40,7 @@ jobs:
         gcloud --quiet auth configure-docker
     - name: Deploy
       run: |-
-        gcloud functions deploy GetPrice \
+        gcloud functions deploy $SERVERLESS_INSTANCE_NAME \
+          --region=$SERVERLESS_INSTANCE_ZONE --project=$SERVERLESS_INSTANCE \
+          --entry-point=GetPrice \
           --runtime go119 --trigger-http --allow-unauthenticated --source=./serverless
