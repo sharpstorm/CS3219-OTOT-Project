@@ -7,8 +7,6 @@ on: [push]
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
-  SERVERLESS_INSTANCE: ${{ secrets.SERVERLESS_INSTANCE_NAME }}
-  SERVERLESS_INSTANCE_ZONE: ${{ secrets.SERVERLESS_INSTANCE_ZONE }}
 
 jobs:
   setup-build-publish-deploy:
@@ -36,7 +34,7 @@ jobs:
 
     - name: Deploy
       run: |-
-        gcloud functions deploy $SERVERLESS_INSTANCE_NAME \
-          --region=${{ secrets.SERVERLESS_INSTANCE_ZONE }} --project=$PROJECT_ID \
+        gcloud functions deploy "${{ secrets.SERVERLESS_INSTANCE_NAME }}" \
+          --region="${{ secrets.SERVERLESS_INSTANCE_ZONE }}" --project=$PROJECT_ID \
           --entry-point=GetPrice \
           --runtime go119 --trigger-http --allow-unauthenticated --source=./serverless
