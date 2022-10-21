@@ -3,7 +3,10 @@
 
 name: Deploy App to Google Cloud Functions
 
-on: [push]
+on:
+  push:
+    branches:
+    - 'release'
 
 env:
   PROJECT_ID: ${{ secrets.GCE_PROJECT }}
