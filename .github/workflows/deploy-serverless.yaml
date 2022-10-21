@@ -1,5 +1,5 @@
-# Adapted from:
-# https://github.com/google-github-actions/setup-gcloud/blob/main/example-workflows/gce/.github/workflows/gce.yaml
+# Using CLI specifications from:
+# https://cloud.google.com/sdk/gcloud/reference/functions/deploy
 
 name: Deploy App to Google Cloud Functions
 
