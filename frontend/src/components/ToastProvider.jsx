@@ -23,7 +23,7 @@ function ToastProvider({ children }) {
 
   return (
     <>
-      <ToastContainer className="p-3" position="top-center">
+      <ToastContainer className="p-3" position="top-center" containerPosition="fixed">
         {Array.from(Object.keys(notifications)).filter((x) => x !== undefined).map((key) => (
           <Toast
             key={key}
