@@ -119,6 +119,10 @@ func getTcgApiResponse(apiToken string, cardId string) ([]byte, error) {
 		return nil, err
 	}
 
+	if resp.StatusCode != 200 {
+		return nil, nil
+	}
+
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
@@ -128,6 +132,10 @@ func getTcgApiResponse(apiToken string, cardId string) ([]byte, error) {
 }
 
 func parseTcgApiResponse(response []byte) (*PriceData, error) {
+	if response == nil {
+		return nil, nil
+	}
+
 	var dataContainer ApiResponse
 	err := json.Unmarshal(response, &dataContainer)
 	if err != nil {
