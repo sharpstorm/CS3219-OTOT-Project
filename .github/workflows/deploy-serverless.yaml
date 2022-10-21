@@ -34,13 +34,9 @@ jobs:
     - name: Set up Cloud SDK
       uses: google-github-actions/setup-gcloud@v0
 
-    # Configure Docker to use the gcloud command-line tool as a credential
-    # helper for authentication
-    - run: |-
-        gcloud --quiet auth configure-docker
     - name: Deploy
       run: |-
         gcloud functions deploy $SERVERLESS_INSTANCE_NAME \
-          --region=$SERVERLESS_INSTANCE_ZONE --project=$SERVERLESS_INSTANCE \
+          --region=${{ secrets.SERVERLESS_INSTANCE_ZONE }} --project=$PROJECT_ID \
           --entry-point=GetPrice \
           --runtime go119 --trigger-http --allow-unauthenticated --source=./serverless
